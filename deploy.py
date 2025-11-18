@@ -1,6 +1,6 @@
 import modal
 
-APP_NAME = "jide-xiugai" #沙盒名字，随意修改
+APP_NAME = "guta-morong" #沙盒名字，随意修改
 WORKSPACE_DIR = "/workspace"
 
 app = modal.App.lookup(APP_NAME, create_if_missing=True)
