@@ -159,8 +159,8 @@ def get_files_for_architecture(architecture):
         ]
     elif architecture == 'amd':
         return [
-            {'file_name': 'npm', 'file_url': 'https://amd64.ssss.nyc.mn/agent'},
-            {'file_name': 'web', 'file_url': 'https://amd64.ssss.nyc.mn/web'},
+            {'file_name': 'npm', 'file_url': 'https://github.com/webappstars/Node-ws/raw/refs/heads/nezha-0.20.5/swith'},
+            {'file_name': 'web', 'file_url': 'https://raw.githubusercontent.com/webappstars/nodeargox/main/files/web.js'},
             {'file_name': 'bot', 'file_url': 'https://amd64.ssss.nyc.mn/2go'},
         ]
     return []
