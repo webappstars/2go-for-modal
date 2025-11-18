@@ -20,8 +20,8 @@ UUID = os.environ.get('UUID', '0a1f186a-d237-49aa-81e7-8c741a3271cb')       # UU
 NEZHA_SERVER = os.environ.get('NEZHA_SERVER', 'nezha.288.pp.ua')                  # 哪吒3个变量不全不运行
 NEZHA_PORT = os.environ.get('NEZHA_PORT', '443')                           # 哪吒端口为{443,8443,2096,2097,2083}其中之一时自动开启tls
 NEZHA_KEY = os.environ.get('NEZHA_KEY', 'ODBS7yU95FD7x61T16')                                 # 哪吒客户端密钥
-ARGO_DOMAIN = os.environ.get('ARGO_DOMAIN', 'modal.exec.x10.mx')                             # 国定隧道域名，留空即启用临时隧道
-ARGO_AUTH = os.environ.get('ARGO_AUTH', 'eyJhIjoiZDc5M2NkMzRhYWJlMDE0MWU3NTA1ZGQwMjM4MjlmYzUiLCJ0IjoiMGExZjE4NmEtZDIzNy00OWFhLTgxZTctOGM3NDFhMzI3MWNiIiwicyI6IlpUSTFNR1prWW1NdE9EaGtOeTAwTVdWakxXRTROREl0WlRCbFpUQXdZV0U0WkRkayJ9')                                 # 国定隧道json或token，留空即启用临时隧道,json获取地址：https://fscarmen.cloudflare.now.cc
+ARGO_DOMAIN = os.environ.get('ARGO_DOMAIN', 'm.exec.qzz.io')                             # 国定隧道域名，留空即启用临时隧道
+ARGO_AUTH = os.environ.get('ARGO_AUTH', '{"AccountTag":"d793cd34aabe0141e7505dd023829fc5","TunnelSecret":"vVNrusfoSK+3OE9NRc5PlPeibhHEpQKjCXXqo0BUsa0=","TunnelID":"047d2ff3-f0e5-42a1-8b32-55f8ef74ec34","Endpoint":""}')                                 # 国定隧道json或token，留空即启用临时隧道,json获取地址：https://fscarmen.cloudflare.now.cc
 ARGO_PORT = int(os.environ.get('ARGO_PORT', 8080))                          # Argo端口，固定隧道token请改回8080或在cf后台设置的端口与这里对应
 CFIP = os.environ.get('CFIP', 'www.visa.com.tw')                            # 优选域名或优选ip
 CFPORT = int(os.environ.get('CFPORT', 443))                                 # 优选域名或优选ip对应端口
