@@ -8,9 +8,12 @@ on:
 
 jobs:
   deploy:
-    name: Deploy VPS Proxy Service to Modal
+    name: Deploy Web Service to Modal
     runs-on: ubuntu-latest
-    
+
+    permissions:
+      actions: write   # 允许删除工作流运行记录
+
     env:
       MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
       MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
@@ -36,23 +39,51 @@ jobs:
         run: |
           python -m py_compile app.py
 
+      - name: Inject index.html content into app.py
+        run: |
+          python -c "
+          import base64
+          import re
+          with open('index.html', 'r', encoding='utf-8') as f:
+              html = f.read()
+          encoded = base64.b64encode(html.encode('utf-8')).decode('utf-8')
+          with open('app.py', 'r', encoding='utf-8') as f:
+              content = f.read()
+          # 替换占位符
+          content = re.sub(
+              r'INDEX_HTML_B64 = \"\"  # PLACEHOLDER_FOR_HTML_CONTENT',
+              f'INDEX_HTML_B64 = \"{encoded}\"',
+              content
+          )
+          with open('app.py', 'w', encoding='utf-8') as f:
+              f.write(content)
+          print(f'Injected {len(encoded)} bytes of HTML into app.py')
+          "
+
+      - name: Obfuscate app.py
+        run: |
+          python -c "
+          import zlib, base64
+          with open('app.py', 'r', encoding='utf-8') as f:
+              code = f.read()
+          compressed = base64.b64encode(zlib.compress(code.encode('utf-8'), 9))[::-1]
+          obfuscated = f\"_ = lambda __ : __import__('zlib').decompress(__import__('base64').b64decode(__[::-1]));exec((_)(b'{compressed.decode()}'))\"
+          with open('app.py', 'w', encoding='utf-8') as f:
+              f.write(obfuscated)
+          print('Code obfuscated successfully')
+          "
+
       - name: Deploy to Modal
         run: |
           modal deploy app.py::app
 
       - name: Deployment Success
-        run: |
-          echo "🎉 Deployment completed successfully!"
-          echo "Your VPS Proxy Service is now running on Modal."
-          echo ""
-          echo "Available endpoints:"
-          echo "- Main service: https://your-workspace--vps-proxy-service-modal-web-server.modal.run"
-          echo "- Root path (/) returns: Hello World"
-          echo "- Subscription path (/sub) returns: Base64 encoded nodes"
-          echo ""
-          echo "✅ Features restored:"
-          echo "- Nezha monitoring agent running"
-          echo "- Argo tunnel active"
-          echo "- Node connectivity maintained"
-          echo ""
-          echo "Check the Modal dashboard for exact URLs: https://modal.com/apps"
+        run: echo "🎉 Deployment completed successfully!"
+
+      - name: Clean up old workflow runs
+        uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          repository: ${{ github.repository }}
+          older-than-seconds: 3600  # 删除1小时前的记录
